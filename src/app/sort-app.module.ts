@@ -27,7 +27,7 @@ export class SortAppModule { }
 export class SortSharedAppModule {
   static forRoot(): ModuleWithProviders<SortSharedAppModule> {
     return {
-      ngModule: SortAppComponent,
+      ngModule: SortAppModule,
       providers: []
     }
   }

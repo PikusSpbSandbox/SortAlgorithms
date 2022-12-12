@@ -5,13 +5,15 @@ import { SortAppComponent } from './sort-app.component';
 import { BubbleSortComponent } from './bubble-sort/bubble-sort.component';
 import { ShakerSortComponent } from './shaker-sort/shaker-sort.component';
 import { InsertionSortComponent } from './insertion-sort/insertion-sort.component';
+import { ShellSortComponent } from './shell-sort/shell-sort.component';
 
 @NgModule({
   declarations: [
     SortAppComponent,
     BubbleSortComponent,
     ShakerSortComponent,
-    InsertionSortComponent
+    InsertionSortComponent,
+    ShellSortComponent
   ],
   imports: [
     BrowserModule

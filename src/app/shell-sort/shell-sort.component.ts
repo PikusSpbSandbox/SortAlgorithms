@@ -15,11 +15,14 @@ export class ShellSortComponent {
   shellSort(array: number[]) {
     let n = array.length;
 
-    //Start with a really large gap, and then reduce the gap until there isn't any
-    //With this, the gap starts as half of the array length, and then half of that every time
+    // Start with a really large gap, and then
+    // reduce the gap until there isn't any
+    // With this, the gap starts as half of the array length,
+    // and then half of that every time
     for (let gap = Math.floor(n/2); gap > 0; gap = Math.floor(gap/2))
     {
-      //Do an insertion sort for each of the section the gap ends up dividing
+      // Do an insertion sort for each of
+      // the section the gap ends up dividing
       for (let i = gap; i < n; i ++)
       {
         //We store the current varible

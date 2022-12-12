@@ -1,0 +1,57 @@
+@import url("~highlight.js/styles/github-dark-dimmed.css");
+
+div.sort-app {
+  canvas.chart {
+    display: inline-block;
+    background-color: rgb(255 255 255 / 90%);
+    border-radius: 5px;
+  }
+
+  pre {
+    position: relative;
+
+    display: inline-block;
+
+    margin: 0 0 0 20px;
+    padding: 10px 20px 10px 10px;
+
+    font-family: Consolas;
+
+    background-color: rgb(50 50 50 / 90%) !important;
+    border-radius: 5px;
+
+    &::before {
+      content: "TypeScript";
+
+      position: absolute;
+      top: 3px;
+      right: 8px;
+
+      font-size: smaller;
+      font-style: italic;
+      color: rgb(255 255 255 / 50%);
+    }
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  div.chart-container {
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+
+    width: 700px;
+    min-height: 450px;
+    margin-top: 10px;
+  }
+
+  h1,
+  h2 {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+}

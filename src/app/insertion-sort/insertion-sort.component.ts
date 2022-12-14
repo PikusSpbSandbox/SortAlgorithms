@@ -1,16 +1,13 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import Chart from 'chart.js/auto';
+import {Component} from '@angular/core';
+import {AbstractSortComponent} from "../abstract-sort/abstract-sort.component";
 
 @Component({
   selector: 'insertion-sort',
   templateUrl: './insertion-sort.component.html',
   styleUrls: ['./insertion-sort.component.less']
 })
-export class InsertionSortComponent {
-  @ViewChild('canvas')
-  private canvas!: ElementRef;
-  private chart!: Chart;
-  title = 'Insertion sort';
+export class InsertionSortComponent extends AbstractSortComponent {
+  override title = 'Insertion sort';
   sortCode = `
   insertionSort(array: number[]) {
     for (let i = 1; i < array.length; i++) {
@@ -27,11 +24,8 @@ export class InsertionSortComponent {
   }
   `;
 
-  sleep(ms: number) {
-    return new Promise(r => setTimeout(r, ms));
-  }
-
-  async insertionSort(array: number[]) {
+  override async sort(array: number[]) {
+    this.sortIsPlaying = true;
     for (let i = 1; i < array.length; i++) {
       let currentValue = array[i];
       let j;
@@ -39,15 +33,20 @@ export class InsertionSortComponent {
         array[j + 1] = array[j];
 
         this.updateChart(array, false, j + 1, i);
-        await this.sleep(1000);
+        if (!await this.sleep(1000)) {
+          return;
+        }
       }
       array[j + 1] = currentValue;
 
       this.updateChart(array, true,j + 1, i);
-      await this.sleep(1000);
+      if (!await this.sleep(1000)) {
+        return;
+      }
     }
 
     this.updateChart(array, false, 0, -1);
+    this.sortIsPlaying = false;
   }
 
   updateChart(values: number[], showKeyOnly: boolean, index: number, length: number) {
@@ -68,26 +67,5 @@ export class InsertionSortComponent {
     this.chart.data.labels = values;
     this.chart.data.datasets[0].data = values;
     this.chart.update();
-  }
-
-  async ngAfterViewInit() {
-    Chart.defaults.font.size = 15;
-    Chart.defaults.font.family = 'Verdana';
-    Chart.defaults.responsive = true;
-    Chart.defaults.maintainAspectRatio = false;
-    this.chart = new Chart(this.canvas.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: [],
-        datasets: [
-          {
-            label: this.title,
-            data: []
-          }
-        ]
-      },
-    });
-
-    this.insertionSort([10,3,2,7,9,1,8,6,4,5]);
   }
 }

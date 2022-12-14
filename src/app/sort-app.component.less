@@ -1,12 +1,6 @@
 @import url("~highlight.js/styles/github-dark-dimmed.css");
 
 div.sort-app {
-  canvas.chart {
-    display: inline-block;
-    background-color: rgb(255 255 255 / 90%);
-    border-radius: 5px;
-  }
-
   pre {
     position: relative;
 
@@ -46,9 +40,22 @@ div.sort-app {
     width: 700px;
     min-height: 450px;
     margin-top: 10px;
+
+    canvas.chart {
+      display: inline-block;
+      background-color: rgb(255 255 255 / 90%);
+      border-radius: 5px;
+      max-height: 450px !important;
+    }
+
+    .replay-button {
+      position: absolute;
+      left: calc(700px - 24px - 5px);
+      top: 5px;
+      cursor: pointer;
+    }
   }
 
-  h1,
   h2 {
     display: block;
     margin-top: 20px;

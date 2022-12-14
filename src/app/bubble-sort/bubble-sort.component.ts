@@ -1,16 +1,13 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import Chart from 'chart.js/auto';
+import {Component} from '@angular/core';
+import {AbstractSortComponent} from "../abstract-sort/abstract-sort.component";
 
 @Component({
   selector: 'bubble-sort',
   templateUrl: './bubble-sort.component.html',
   styleUrls: ['./bubble-sort.component.less']
 })
-export class BubbleSortComponent {
-  @ViewChild('canvas')
-  private canvas!: ElementRef;
-  private chart!: Chart;
-  title = 'Bubble sort';
+export class BubbleSortComponent extends AbstractSortComponent {
+  override title = 'Bubble sort';
   sortCode = `
     bubbleSort(array: number[]) {
       for (let i = 0; i <= array.length - 1; i++) {
@@ -35,11 +32,8 @@ export class BubbleSortComponent {
     }
   `;
 
-  sleep(ms: number) {
-    return new Promise(r => setTimeout(r, ms));
-  }
-
-  async bubbleSort(array: number[]) {
+  override async sort(array: number[]) {
+    this.sortIsPlaying = true;
     for (let i = 0; i <= array.length-1; i++) {
 
       // Last i elements are already in place
@@ -56,11 +50,14 @@ export class BubbleSortComponent {
         }
 
         this.updateChart(array, j);
-        await this.sleep(1000);
+        if (!await this.sleep(1000)) {
+          return;
+        }
       }
     }
     // Print the sorted array
     this.updateChart(array, -1);
+    this.sortIsPlaying = false;
   }
 
   updateChart(values: number[], currentIndex: number) {
@@ -77,26 +74,5 @@ export class BubbleSortComponent {
     this.chart.data.labels = values;
     this.chart.data.datasets[0].data = values;
     this.chart.update();
-  }
-
-  async ngAfterViewInit() {
-    Chart.defaults.font.size = 15;
-    Chart.defaults.font.family = 'Verdana';
-    Chart.defaults.responsive = true;
-    Chart.defaults.maintainAspectRatio = false;
-    this.chart = new Chart(this.canvas.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: [],
-        datasets: [
-          {
-            label: this.title,
-            data: []
-          }
-        ]
-      },
-    });
-
-    this.bubbleSort([10,3,2,7,9,1,8,6,4,5]);
   }
 }

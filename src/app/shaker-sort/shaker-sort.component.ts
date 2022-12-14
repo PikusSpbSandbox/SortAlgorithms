@@ -1,16 +1,13 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import Chart from 'chart.js/auto';
+import {Component} from '@angular/core';
+import {AbstractSortComponent} from "../abstract-sort/abstract-sort.component";
 
 @Component({
   selector: 'shaker-sort',
   templateUrl: './shaker-sort.component.html',
   styleUrls: ['./shaker-sort.component.less']
 })
-export class ShakerSortComponent {
-  @ViewChild('canvas')
-  private canvas!: ElementRef;
-  private chart!: Chart;
-  title = 'Shaker (Cocktail) sort';
+export class ShakerSortComponent extends AbstractSortComponent {
+  override title = 'Shaker (Cocktail) sort';
   sortCode = `
   cocktailSort(array: number[]) {
     let start = 0, end = array.length, swapped = true;
@@ -48,11 +45,8 @@ export class ShakerSortComponent {
   }
   `;
 
-  sleep(ms: number) {
-    return new Promise(r => setTimeout(r, ms));
-  }
-
-  async cocktailSort(array: number[]) {
+  override async sort(array: number[]) {
+    this.sortIsPlaying = true;
     let start = 0, end = array.length, swapped = true;
 
     while (swapped) {
@@ -66,7 +60,9 @@ export class ShakerSortComponent {
         }
 
         this.updateChart(array, i, 1);
-        await this.sleep(1000);
+        if (!await this.sleep(1000)) {
+          return;
+        }
       }
 
       end--;
@@ -83,7 +79,9 @@ export class ShakerSortComponent {
         }
 
         this.updateChart(array, i, -1);
-        await this.sleep(1000);
+        if (!await this.sleep(1000)) {
+          return;
+        }
       }
 
       start++;
@@ -91,6 +89,7 @@ export class ShakerSortComponent {
 
     // Print the sorted array
     this.updateChart(array, -1, 0);
+    this.sortIsPlaying = false;
   }
 
   updateChart(values: number[], currentIndex: number, increment: number) {
@@ -107,26 +106,5 @@ export class ShakerSortComponent {
     this.chart.data.labels = values;
     this.chart.data.datasets[0].data = values;
     this.chart.update();
-  }
-
-  async ngAfterViewInit() {
-    Chart.defaults.font.size = 15;
-    Chart.defaults.font.family = 'Verdana';
-    Chart.defaults.responsive = true;
-    Chart.defaults.maintainAspectRatio = false;
-    this.chart = new Chart(this.canvas.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: [],
-        datasets: [
-          {
-            label: this.title,
-            data: []
-          }
-        ]
-      },
-    });
-
-    this.cocktailSort([10,3,2,7,9,1,8,6,4,5]);
   }
 }

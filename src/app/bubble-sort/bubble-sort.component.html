@@ -1,11 +1,12 @@
 <div>
-  <h2>Bubble sort</h2>
+  <a href="/sort#bubble-sort"><h2 id="bubble-sort">Bubble sort</h2></a>
 
   <label>Worst-Case time complexity:</label> O(n<sup>2</sup>).
   <label>Average case time complexity</label> O(n<sup>2</sup>).
   <label>Best case time complexity</label> O(n).
 
   <div class="chart-container">
+    <div (click)="onReplayClick()" class="replay-button"><img src="../../../../../../assets/images/replay-24.png" title="Replay"></div>
     <canvas #canvas class="chart"></canvas>
     <pre [innerHTML]="sortCode"></pre>
   </div>
